@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fortune Tiger Katsina</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:radial-gradient(#ff9a00,#b80000 60%,#3a0000);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:15px;color:#fff}
+.game{width:100%;max-width:400px;background:#1a0000;border:3px solid gold;border-radius:20px;padding:15px;box-shadow:0 0 30px gold}
+h1{text-align:center;color:gold}
+.stats{display:flex;justify-content:space-between;background:#0008;padding:10px;border-radius:10px;margin:10px 0}
+.reels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;background:#000;padding:15px;border-radius:15px}
+.reel{background:#fff;border-radius:10px;height:80px;display:flex;align-items:center;justify-content:center;font-size:40px}
+button{width:100%;padding:16px;margin-top:12px;background:gold;border:none;border-radius:50px;font-size:20px;font-weight:bold}
+#msg{text-align:center;margin-top:8px;color:gold;font-weight:bold}
+.ctrl{display:flex;gap:8px;margin-top:10px}
+.ctrl div{flex:1;background:#fff2;border:1px solid gold;padding:8px;border-radius:8px;text-align:center}
+</style>
+</head>
+<body>
+<div class="game">
+<h1>🐯 FORTUNE TIGER 🐯</h1>
+<div class="stats">
+<div>Bal:<b id="bal">₦5000</b></div>
+<div>Bet:<b id="bet">₦100</b></div>
+<div>Win:<b id="win">₦0</b></div>
+</div>
+<div class="reels">
+<div class="reel" id="r1">🐯</div>
+<div class="reel" id="r2">💰</div>
+<div class="reel" id="r3">🧧</div>
+</div>
+<div id="msg">Good Luck!</div>
+<button onclick="spin()">SPIN 🎰</button>
+<div class="ctrl">
+<div onclick="bet=bet>50?bet-50:50;upd()">- Bet</div>
+<div onclick="bet=bet<500?bet+50:500;upd()">+ Bet</div>
+</div>
+</div>
+<script>
+let bal=5000,bet=100;
+const s=['🐯','💰','🧧','🍊','💎','7️⃣'];
+function upd(){document.getElementById('bal').innerText='₦'+bal;document.getElementById('bet').innerText='₦'+bet}
+function spin(){
+if(bal<bet){msg.innerText='No money!';return}
+bal-=bet;upd();msg.innerText='...';
+let c=0;let iv=setInterval(()=>{
+r1.innerText=s[Math.random()*6|0];r2.innerText=s[Math.random()*6|0];r3.innerText=s[Math.random()*6|0];
+c++;if(c>12){clearInterval(iv);end()}
+},80)
+}
+function end(){
+let a=s[Math.random()*6|0],b=s[Math.random()*6|0],c=s[Math.random()*6|0];
+if(Math.random()<0.4){b=a;if(Math.random()<0.5)c=a}
+r1.innerText=a;r2.innerText=b;r3.innerText=c;
+let w=0;
+if(a==b&&b==c){w=a=='🐯'?bet*10:a=='💰'?bet*5:bet*3;msg.innerText='WIN ₦'+w+'! 🎉'}
+else if(a==b||b==c||a==c){w=a=='🐯'||b=='🐯'?bet*2:bet;if(w)msg.innerText='Small Win ₦'+w;else msg.innerText='Try Again'}
+else msg.innerText='Try Again 🍀';
+if(w){bal+=w;win.innerText='₦'+w}else win.innerText='₦0';
+upd()
+}
+</script>
+</body>
+</html>
